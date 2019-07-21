@@ -92,11 +92,35 @@
             <t t-call="vat_bd_6_3.external_layout_vat63">
                 <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
                 <div class="page">
+
+<!--
+                    <h2>
+                        <span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">Invoice</span>
+                        <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Draft Invoice</span>
+                        <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Cancelled Invoice</span>
+                        <span t-if="o.type == 'out_refund'">Credit Note</span>
+                        <span t-if="o.type == 'in_refund'">Vendor Credit Note</span>
+                        <span t-if="o.type == 'in_invoice'">Vendor Bill</span>
+                        <span t-field="o.number"/>
+                    </h2>
+-->
+
+
+
                     <div class="row">
                         <div class="col-xs-2">ক্রেতার নামঃ </div>
                         <div class="col-xs-6"><span t-field="o.partner_id"/></div>
+
                         <div  class="col-xs-2 ">চালানপত্র নম্বরঃ</div>
-                        <div  class="col-xs-2 "><span t-field="o.number"/></div>
+                            <div  class="col-xs-2 ">
+                                <span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')"></span>
+                                <span t-if="o.type == 'out_invoice' and o.state == 'draft'">খসড়া চালান</span>
+                                <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Cancelled Invoice</span>
+                                <span t-if="o.type == 'out_refund'">Credit Note</span>
+                                <span t-if="o.type == 'in_refund'">Vendor Credit Note</span>
+                                <span t-if="o.type == 'in_invoice'">বিক্রেতা বিল</span>
+                                <span t-field="o.number"/>
+                            </div>
 
                         <div class="col-xs-2">ক্রেতার বিআইএনঃ </div>
                         <div class="col-xs-6"><span t-field="o.partner_id.bin"/></div>
@@ -150,9 +174,9 @@
 
 
                         <tbody class="invoice_tbody">
-                            <t t-set="serial" t-value="1"/>
+                            <t t-set="serial" t-value="0"/>
                             <tr t-foreach="o.invoice_line_ids" t-as="l">
-                                <td><span t-esc="serial"/></td>
+                                <td><span t-esc="serial+1"/></td>
                                 <td><span t-field="l.name"/></td>
                                 <td class="text-right">
                                     <span t-field="l.uom_id"  groups="product.group_uom"/>
@@ -186,10 +210,10 @@
                             </tr>
                             <tr t-foreach="range(max(5-len(o.invoice_line_ids),0))" t-as="l">
                                 <td t-translation="off">&amp;nbsp;</td>
-                                <td ></td>
                                 <td></td>
                                 <td></td>
-                                <td ></td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
